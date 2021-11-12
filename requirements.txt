@@ -1,0 +1,8 @@
+django
+ffmpeg
+docx2pdf
+ppt2pdf
+img2pdf
+pdf2image
+pypdf2
+gtts
