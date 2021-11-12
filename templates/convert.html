@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Myxable - Convert your files {% endblock %}
+{% block content %}
+<div style="flex-direction: column;" id="main">
+    <div class="main-header">
+        <h1>
+            Upload your files
+        </h1>
+    </div>
+    {% if context.file_link %}
+        <div class="uploaded-file">
+            <i class="fas fa-file-alt"></i>
+            <p class="uploaded-name"></p>
+            <a target="_blank" class="download-file" href="/{{ context.file_link }}">Download</a>
+        </div>
+        <script>
+            let str = String.raw`{{ context.file_link }}`.split("\\")[1]
+            console.log(str)
+            $(".uploaded-name").html(str)
+        </script>
+    {% else %}
+        <form class="main-form" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label class="noselect">
+                {% if context.multiple %}
+                    <input name="uploaded" type="file" class="btn" accept="{{context.accept}}" multiple onchange="getFileData(this)">
+                {% else %}
+                    <input name="uploaded" type="file" class="btn" accept="{{context.accept}}" onchange="getFileData(this)">
+                {% endif %}
+                <!--<input name="uploaded" type="file" class="btn" accept=".png, .jpg, .webp, .pdf, .doc, .docx, .mkv" onchange="getFileData(this)">-->
+                <i class="fas fa-file-upload"></i>Upload
+            </label>
+            <div class="form-container">
+                <i class="fas fa-file-alt"></i>
+                <p class="file-name"></p>
+                <p class="file-size"></p>
+                <span class='back'>
+                    Back
+                </span>
+                <!--<div class="form-checks"></div>-->
+                <input class="final-submit" type="submit" value="Submit">
+            </div>
+        </form>
+
+        <div class="form-container-2">
+            <div class="loader">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <p>Converting...</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

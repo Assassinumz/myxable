@@ -1,13 +1,102 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TestDoc</title>
-</head>
-<body>
-    Testing document 
-    <h1>Hello, world!</h1>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %}Myxable - One stop to convert all your files {% endblock %}
+{% block content %}
+{% load static %}
+<div id="main">
+    <div class="main-left">
+        <img src="{% static 'assets/words.png' %}">
+    </div>
+    
+    <div class="main-right">
+        <div class="main-header">
+            <h1>
+                CONVERT YOUR FILE TO
+            </h1>
+            <h1 class="head-spacing">
+                <div class="carousel">
+                    <div class="pre">MYXABLE</div>
+                    <div class="change_outer">
+                        <div class="change_inner">
+                            <div class="element">.PNG</div>
+                            <div class="element">.JPG</div>
+                            <div class="element">.WEBP</div>
+                            <div class="element">.PDF</div>
+                            <div class="element">.DOCX</div>
+                            <div class="element">.MP4</div>
+                            <div class="element">.MKV</div>
+                            <div class="element">.MP3</div>
+                            <div class="element">.PNG</div>
+                        </div>
+                    </div>
+                </div>
+            </h1>
+        </div>
+
+        {% if context.file_link %}
+            <div class="uploaded-file">
+                <i class="fas fa-file-alt"></i>
+                <p class="uploaded-name"></p>
+                <a target="_blank" class="download-file" href="{{ context.file_link }}">Download</a>
+            </div>
+            <script>
+                let str = String.raw`{{ context.file_link }}`.split("\\")[1]
+                console.log(str)
+                $(".uploaded-name").html(str)
+            </script>
+        {% else %}
+        <form class="main-form" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label class="noselect">
+                <input name="uploaded" type="file" class="btn" accept=".png, .jpg, .webp, .pdf, .doc, .docx, .mkv" onchange="getFileData(this)">
+                <i class="fas fa-file-upload"></i>Upload
+            </label>
+            <div class="form-container">
+                <i class="fas fa-file-alt"></i>
+                <p class="file-name"></p>
+                <p class="file-size"></p>
+                <span class='back'>
+                    Back
+                </span>
+                <div class="form-checks"></div>
+                <input class="final-submit" type="submit" value="Submit">
+            </div>
+        </form>
+
+        <div class="form-container-2">
+            <div class="loader">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <p>Converting...</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+<footer>
+    <div id="foot">
+        <div id="left">
+            <!--<img src="{% static 'logo.png'%}">-->
+            <h1>myx<span class="nav-bold">able</span>.tech</h1>
+            <h4>Contributors: </h4>
+            <div id="profiles">
+                <a href='https://github.com/Assassinumz'><i class="fab fa-github"></i> Assassinumz (Umraz Khan)</a>
+                <a href="https://github.com/Fain17"><i class="fab fa-github"></i> Fain17 (Chetan R)</a>
+                <a href="https://github.com/Shades-en"><i class="fab fa-github"></i> Shades-en (Owais Iqbal)</a>
+                <a href="https://github.com/Yabuku-xD"><i class="fab fa-github"></i> Yabuku-xD (Shyamalan K)</a>
+            </div>
+            
+        </div>
+        <div id="right">
+            <h1>About</h1>
+            <h4><p>This project was prepared by the displayed contributors, 
+                focussing on the conversion of files into multiple files and is much user-friendly as opposed to others around.</p>
+                <p>Django was used in the backend, whereas HTML, CSS and javascript in
+                the front end.</p><p>For this grateful opportunity to present this we <b>Thank you</b>.</p>
+            </h4>
+        </div>
+    </div>
+    <hr>
+    <h5>&lt;/&gt; with :heart: by <span class="nav-bold"><a href='https://discord.gg/5JNz9jjS'>Team Pixels</a></span></h5>      
+</footer>
+{% endblock %}
