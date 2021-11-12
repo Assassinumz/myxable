@@ -67,12 +67,10 @@ class Converter:
             files = os.listdir(temp_dir)    
         
         if index:
-            print(files)
             path = f"output\{self.id[0:8]}-{self.o_name}.zip"
             zipobj = ZipFile(f"{settings.BASE_DIR}\{path}", 'w')
             for x in files:
                 name = x.split('\\')[1]
-                print(name)
                 zipobj.write(os.path.abspath(f"{settings.BASE_DIR}\{x}"), name)
             zipobj.close()
             return path
@@ -81,7 +79,7 @@ class Converter:
             for x in files:
                 zipobj.write(os.path.abspath(f"{settings.BASE_DIR}\media\{self.id}_temp\{x}"), x)
             zipobj.close()
-            shutil.rmtree(f"media\{self.id}_temp")
+            #shutil.rmtree(f"media\{self.id}_temp")
 
 
     def png2jpg(self):
@@ -89,7 +87,7 @@ class Converter:
         Convert PNG to JPG
         """
         if len(self.file_total) > 1:
-            temp_folder = f"media\{self.id}_temp"
+            temp_folder = f"{media}\{self.id}_temp"
             files = os.listdir(temp_folder)
             for x in range(len(files)):
                 filename = f"{self.o_name}_{x}.jpg"
@@ -99,13 +97,14 @@ class Converter:
                 rgb_im.save(f"{temp_folder}\{filename}")
 
             self.archive(files=self.saved_files)
-            path = f"output\\{self.o_name}.zip"
+            path = f"output\{self.o_name}.zip"
             return path
         else:
             im = Image.open(media + f"\{self.uid}")
             rgb_im = im.convert('RGB')
-            path = f'output\\{self.o_name}.jpg'
+            path = f'{settings.BASE_DIR}\output\{self.o_name}.jpg'
             rgb_im.save(path)
+            path = f"output\{self.o_name}.jpg"
             return path
 
     def jpg2png(self):
@@ -113,7 +112,7 @@ class Converter:
         Convert JPG to PNG
         """
         if len(self.file_total) > 1:
-            temp_folder = f"media\{self.id}_temp"
+            temp_folder = f"{media}\{self.id}_temp"
             files = os.listdir(temp_folder)
             for x in range(len(files)):
                 filename = f"{self.o_name}_{x}.png"
@@ -125,13 +124,14 @@ class Converter:
             return path
         else:
             im = Image.open(media + f"\{self.uid}")
-            path = f'output\{self.o_name}.png'
+            path = f'{settings.BASE_DIR}\output\{self.o_name}.png'
             im.save(path)
+            path = f"output\{self.o_name}.png"
             return path
 
     def img2webp(self):
         if len(self.file_total) > 1:
-            temp_folder = f"media\{self.id}_temp"
+            temp_folder = f"{settings.BASE_DIR}\media\{self.id}_temp"
             files = os.listdir(temp_folder)
             for x in range(len(files)):
                 filename = f"{self.o_name}_{x}.webp"
@@ -146,8 +146,9 @@ class Converter:
         else:
             image = Image.open(media + f"\{self.uid}")
             rgb_im = image.convert('RGB')
-            path = f'output\{self.o_name}.webp'
+            path = f'{settings.BASE_DIR}\output\{self.o_name}.webp'
             rgb_im.save(path)
+            path = f"output\{self.o_name}.webp"
             return path
     
     def webp2png(self):
@@ -165,19 +166,20 @@ class Converter:
         Convert image (PNG/JPG) to PDF
         """
         if len(self.file_total) > 1:
-            temp_folder = f"media\{self.id}_temp"
+            temp_folder = f"{media}\{self.id}_temp"
             files = os.listdir(temp_folder)
             destination = f"{self.o_name}.pdf"
-            with open(f"output\{destination}", "ab") as f:
+            with open(f"{settings.BASE_DIR}\output\{destination}", "ab") as f:
                 f.write(i2p.convert([f"{temp_folder}\{i}" for i in files]))
             path = f"output\{self.o_name}.pdf"
             return path
 
         else:
             source = media + f"\{self.uid}"
-            destination = f"output\{self.o_name}.pdf"
+            destination = f"{settings.BASE_DIR}\output\{self.o_name}.pdf"
             with open(f"{destination}", "wb") as f:
                 f.write(i2p.convert(source))
+            path = f"output\{self.o_name}.pdf"
             return destination
 
     def pdf2img(self):
@@ -185,7 +187,7 @@ class Converter:
         """
         source = media + f"\{self.uid}"
         pages = p2i.convert_from_path(source, poppler_path=f"{settings.BASE_DIR}\libs\poppler")
-        temp_folder = "media" + f"\{self.id}_temp"
+        temp_folder = f"{media}\{self.id}_temp"
         os.mkdir(temp_folder)
         files = []
         
@@ -198,19 +200,19 @@ class Converter:
         return f"output\{self.o_name}.zip"
 
     def pdfmerge(self):
-        temp_folder = f"media\{self.id}_temp"
+        temp_folder = f"{media}\{self.id}_temp"
         files = os.listdir(temp_folder)
         merger = PdfFileMerger()
         for pdf in files:
             merger.append(fileobj=open(f"{temp_folder}\{pdf}", 'rb'))
 
-        merger.write(f"{output}\{self.o_name}.pdf")
+        merger.write(f"{settings.BASE_DIR}\output\{self.o_name}.pdf")
         merger.close()
         path = f"output\{self.o_name}.pdf"
         return path
     
     def pdf2speech(self):
-        location = f"media\{self.uid}"
+        location = f"{media}\{self.uid}"
         pdf_file = open(location, 'rb')
         pdf_Reader = PyPDF2.PdfFileReader(pdf_file)
         pages = pdf_Reader.numPages
@@ -225,8 +227,9 @@ class Converter:
     
         text = " ".join(textList)
         audio = gTTS(text=text, lang="en", slow=False)
-        destination = path = f"output\{self.o_name}.mp3"
+        destination = path = f"{settings.BASE_DIR}\output\{self.o_name}.mp3"
         audio.save(destination)
+        path = f"output\{self.o_name}.mp3"
         return path
 
 
@@ -239,15 +242,16 @@ class Converter:
 
     def docx2pdf(self):
         docx_file = media + f'\{self.uid}'
-        pdf_file = f'output\{self.o_name}.pdf'
+        pdf_file = f'{settings.BASE_DIR}\output\{self.o_name}.pdf'
         
         d2p.convert(docx_file, pdf_file)
+        path = f"output\{self.o_name}.pdf"
         return pdf_file
 
     def mkv2mp4(self):
-        location = f"media\{self.uid}"
-        out_name = f"output\{self.o_name}.mp4"
+        location = f"{media}\{self.uid}"
+        out_name = f"{settings.BASE_DIR}\output\{self.o_name}.mp4"
         ffmpeg.input(location).output(out_name).run(overwrite_output=True, cmd=f'{settings.BASE_DIR}\libs\\ffmpeg.exe')
-        path = out_name
+        path = f"output\{self.o_name}.mp4"
         return path
         

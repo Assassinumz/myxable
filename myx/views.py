@@ -12,7 +12,6 @@ def index(request):
         req = request.FILES
         conv = Converter(req)
         checks = list(request.POST.keys())
-        print(checks)
         extension = conv.extension
         converted = []
         
