@@ -25,3 +25,6 @@ python manage.py runserver
 * [Shades-en](https://github.com/Shades-en)
 * [Yabuku-xD](https://github.com/Yabuku-xD)
 * [Fain17](https://github.com/Fain17)
+
+## Elevator Pitch
+* [Click here](https://docs.google.com/document/d/1owS1tOwo0criu8h9gXEXoWe-EeiHZ91tRO6k3qKyLUg/edit?usp=sharing)
