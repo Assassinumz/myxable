@@ -58,9 +58,5 @@ $(".final-submit").click(function() {
 })
 
 $(".back").click(function(){
-    $(".noselect").css('display', 'flex')
-    checks.empty();
-    $(".form-container").css('display', 'none')
-    $(".file-name").html("")
-    $(".file-size").html("")
+    location.reload();
 });
