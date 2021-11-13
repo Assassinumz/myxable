@@ -168,8 +168,8 @@ class Converter:
         if len(self.file_total) > 1:
             temp_folder = f"{media}\{self.id}_temp"
             files = os.listdir(temp_folder)
-            destination = f"{self.o_name}.pdf"
-            with open(f"{settings.BASE_DIR}\output\{destination}", "ab") as f:
+            destination = f"{settings.BASE_DIR}\output\{self.o_name}.pdf"
+            with open(destination, "ab") as f:
                 f.write(i2p.convert([f"{temp_folder}\{i}" for i in files]))
             path = f"output\{self.o_name}.pdf"
             return path
@@ -180,7 +180,7 @@ class Converter:
             with open(f"{destination}", "wb") as f:
                 f.write(i2p.convert(source))
             path = f"output\{self.o_name}.pdf"
-            return destination
+            return path
 
     def pdf2img(self):
         """
