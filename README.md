@@ -1,7 +1,8 @@
 <h1  align="center">Myxable</h1>
 
 <p  align="center">
- Myxable takes the user’s files and converts it to the formats the user selects with the help of open source libraries.
+ Myxable takes the user’s files and converts it to the formats the user selects with the help of open source libraries.<br>
+ A project for [REVA HACK 2021](https://revahack.com/#/)
 </p>
 
 
